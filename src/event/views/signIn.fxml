@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="537.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="event.Controllers.SignIn">
+   <children>
+      <TextField fx:id="empId" layoutX="218.0" layoutY="179.0" />
+      <TextField fx:id="password" layoutX="218.0" layoutY="221.0" />
+      <Button fx:id="btnEnter" layoutX="218.0" layoutY="274.0" mnemonicParsing="false" onAction="#signInActivated" prefHeight="0.0" prefWidth="94.0" text="    Enter    ">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Label layoutX="114.0" layoutY="179.0" text="Employee Id:">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="135.0" layoutY="221.0" text="Password:">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="199.0" layoutY="93.0" text="Sign in">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

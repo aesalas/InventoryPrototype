@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="537.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="event.Controllers.EmpHome">
+   <children>
+      <Label layoutX="172.0" layoutY="123.0" text="What would you like to do?">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <SplitMenuButton layoutX="190.0" layoutY="188.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="157.0">
+        <items>
+          <MenuItem fx:id="viewInventory" mnemonicParsing="false" text="View inventory" />
+          <MenuItem fx:id="requestSupplies" mnemonicParsing="false" text="Request supplies" />
+        </items>
+      </SplitMenuButton>
+      <Button fx:id="submit" layoutX="237.0" layoutY="242.0" mnemonicParsing="false" onAction="#submitActivated" text="Submit">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label fx:id="welcomeLbl" layoutX="121.0" layoutY="60.0" text="Welcome">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

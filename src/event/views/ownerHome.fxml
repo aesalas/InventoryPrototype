@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="369.0" prefWidth="523.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="event.Controllers.ownerHome">
+   <children>
+      <Label layoutX="162.0" layoutY="103.0" text="What would you like to do? ">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <MenuButton layoutX="153.0" layoutY="172.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="217.0">
+        <items>
+          <MenuItem fx:id="purchaseOrders" mnemonicParsing="false" text="Purchase Orders" />
+          <MenuItem fx:id="viewInvent" mnemonicParsing="false" text="View Inventory" />
+            <MenuItem fx:id="editInvent" mnemonicParsing="false" text="Edit Inventory" />
+            <MenuItem fx:id="removeInvent" mnemonicParsing="false" text="Remove from inventory" />
+        </items>
+      </MenuButton>
+      <Button fx:id="submit" defaultButton="true" layoutX="230.0" layoutY="239.0" mnemonicParsing="false" onAction="#submitActivated" text="Submit">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

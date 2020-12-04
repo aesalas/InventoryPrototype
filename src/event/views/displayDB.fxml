@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="479.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="event.Controllers.DisplayDB">
+   <children>
+      <Button fx:id="homeButton" layoutX="412.0" layoutY="344.0" mnemonicParsing="false" onAction="#homeActivated" text="Home" />
+      <TextArea fx:id="displayArea" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="321.0" prefWidth="450.0" />
+      <SplitMenuButton layoutX="61.0" layoutY="344.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="224.0" text="Select Inventory">
+        <items>
+          <MenuItem fx:id="consumables" mnemonicParsing="false" onAction="#consumSelected" text="Consumables" />
+          <MenuItem fx:id="equipment" mnemonicParsing="false" onAction="#equipSelected" text="Equipment" />
+            <MenuItem fx:id="employee" mnemonicParsing="false" onAction="#empSelected" text="Employee" />
+        </items>
+      </SplitMenuButton>
+   </children>
+</Pane>

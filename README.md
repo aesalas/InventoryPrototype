@@ -1,5 +1,7 @@
 Restaurant Inventory System Prototype.
+
 Features:
+  
   1. Login with employee Id and password
     
     - password is between 8-20 charcters consisting of lowercase, uppercase, 

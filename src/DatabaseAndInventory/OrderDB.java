@@ -4,27 +4,26 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.Scanner;
 
-public class ConsumDB {
+public class OrderDB implements Database {
     Connection conn;
     Scanner scan = new Scanner(System.in);
     String Expiration = "";
     LocalDate date = LocalDate.now();
     /**
-     * creates inventory database for consumables
+     * creates order database for purchase orders
      * if not yet created
      */
-    public void createConsumDB() {
+    public void createOrderDB() {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
 
             Statement stmt = conn.createStatement();
-            stmt.execute("CREATE TABLE IF NOT EXISTS Consumables (\n" +
-                    "    itemId       INTEGER        PRIMARY KEY,\n" +
-                    "    itemName VARCHAR,\n" +
-                    "    expireDate VARCHAR,\n" +
+            stmt.execute("CREATE TABLE IF NOT EXISTS PurchaseOrder (\n" +
+                    "    orderId       INTEGER        PRIMARY KEY,\n" +
+                    "    datePlaced VARCHAR,\n" +
                     "    quantity NUMERIC,\n" +
-                    "    category  VARCHAR,\n" +
-                    "    unitPrice   NUMERIC (6, 2)\n" +
+                    "    itemsOrdered  VARCHAR,\n" +
+                    "    totalCost   NUMERIC (6, 2)\n" +
                     ");");
             stmt.close();
         } catch (SQLException e) {
@@ -34,53 +33,30 @@ public class ConsumDB {
     }
 
     /**
-     * Adds new user-entered consumables to database
-     * @param amountToAdd the amount of items the user wishes to add
+     * Adds new purchase order to database
+     * @param id the amount of items the user wishes to add
      * @throws SQLException
      */
-    public void addToDB(int amountToAdd) throws SQLException {
+    public void addToDB(String id, String datePlaced, String itemsOrdered, String quantity, double totalcost) throws SQLException {
         conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
         Statement selectStmt = conn.createStatement();
         String nameInserts;
 
-        int id = selectStmt.executeQuery("SELECT itemId FROM Consumables ORDER BY itemId DESC LIMIT 1;")
+        int id = selectStmt.executeQuery("SELECT orderId FROM PurchaseOrder ORDER BY orderId DESC LIMIT 1;")
                 .getInt("itemId") + 1;
 
-        nameInserts = "INSERT INTO Consumables (itemId, itemName, expireDate, quantity, category, unitPrice) VALUES "
-                + "(?, ?, ?, ?, ?, ?);";
-        for (int i = 0; i < amountToAdd; i++) {
-            String name = "";
-            String category = "";
-            int quantity = 0;
-            double unitPrice = 0;
+        nameInserts = "INSERT INTO PurchaseOrder (orderId, datePlaced, quantity, itemsOrdered, totalCost) VALUES "
+                + "(?, ?, ?, ?, ?);";
 
-            System.out.println("Enter item name:");
-            name = scan.nextLine();
-            System.out.println("Enter the expiration date:");
-            this.Expiration = scan.nextLine();
-            System.out.println("Enter item category:");
-            category = scan.nextLine();
-            System.out.println("Enter item quantity:");
-            quantity = scan.nextInt();
-            System.out.println("Enter item unit price:");
-            unitPrice = scan.nextDouble();
-            scan.nextLine();
-            try {
-                PreparedStatement pstmt = conn.prepareStatement(nameInserts);
-                pstmt.setInt(1, id + i);
-                pstmt.setString(2, name);
-                pstmt.setString(3, this.Expiration);
-                pstmt.setString(4, category);
-                pstmt.setInt(5, quantity);
-                pstmt.setString(6, String.valueOf(unitPrice));
-                pstmt.executeUpdate();
+        PreparedStatement pstmt = conn.prepareStatement(nameInserts);
+        pstmt.setInt(1, id);
+        pstmt.setString(2, datePlaced);
+        pstmt.setInt(3, Integer.parseInt(quantity));
+        pstmt.setString(4, itemsOrdered);
+        pstmt.setString(5, String.valueOf(totalcost));
+        pstmt.executeUpdate();
 
-                pstmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            System.out.println("------------------------------------------");
-        }
+        pstmt.close();
     }
 
     /**

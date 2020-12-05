@@ -6,17 +6,11 @@ import java.util.Scanner;
 public class TestDatabase {
     public static void main(String[] args) throws SQLException {
         Scanner sc = new Scanner(System.in);
-        ConsumDB ab = new ConsumDB();
-        EquipmentDB abc = new EquipmentDB();
+        SuppliesDB abc = new SuppliesDB();
         EmployeeDB a = new EmployeeDB();
 
         a.createEmployeeDB();
-        ab.createConsumDB();
-        abc.createEquipmentDB();
-
-        a.addToDB(1);
-        abc.addToDB(1);
-        ab.addToDB(1);
+        abc.createSuppliesDB();
 
     }
 }

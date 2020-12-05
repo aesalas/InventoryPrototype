@@ -1,5 +1,6 @@
 package event.Controllers;
 
+import DatabaseAndInventory.SuppliesDB;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +10,6 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import DatabaseAndInventory.ConsumDB;
 import DatabaseAndInventory.EmployeeDB;
-import DatabaseAndInventory.EquipmentDB;
 
 import java.io.IOException;
 
@@ -24,8 +24,8 @@ public class DisplayDB {
 
     // initialize database objects to be used when displaying
     EmployeeDB employ = new EmployeeDB();
-    EquipmentDB equip = new EquipmentDB();
-    ConsumDB consum = new ConsumDB();
+    SuppliesDB supp = new SuppliesDB();
+    OrderDB ord = new OrderDB();
 
     // if home button pressed, returns to the sign in page
     public void homeActivated(ActionEvent actionEvent) throws IOException {
@@ -36,7 +36,7 @@ public class DisplayDB {
     }
 
     // Based on the menu item selected, display info
-    public void consumSelected(ActionEvent actionEvent) {displayArea.setText(consum.printDB()); }
-    public void equipSelected(ActionEvent actionEvent) { displayArea.setText(equip.printDB()); }
+    //public void orderSelected(ActionEvent actionEvent) {displayArea.setText(ord.printDB()); }
+    public void suppSelected(ActionEvent actionEvent) { displayArea.setText(supp.printDB()); }
     public void empSelected(ActionEvent actionEvent) { displayArea.setText(employ.printDB()); }
 }

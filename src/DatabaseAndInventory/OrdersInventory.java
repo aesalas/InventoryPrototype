@@ -2,8 +2,7 @@ package DatabaseAndInventory;
 
 public class OrdersInventory{
     EmployeeDB emp = new EmployeeDB();
-    ConsumDB cons = new ConsumDB();
-    EquipmentDB equi = new EquipmentDB();
+    SuppliesDB sup = new SuppliesDB();
 
     void purchaseOrder(){
 

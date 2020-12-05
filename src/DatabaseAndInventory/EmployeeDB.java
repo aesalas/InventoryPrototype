@@ -39,7 +39,7 @@ public class EmployeeDB implements Database {
      * Adds employee(s) to database
      * @throws SQLException
      */
-    public void addToDB(String name, String password, String jobTitle, double payrate) throws SQLException {
+    public void addToDB(String firstName,String lastName, String password, String jobTitle, double payrate) throws SQLException {
         conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
         Statement selectStmt = conn.createStatement();
         String nameInserts;
@@ -59,9 +59,6 @@ public class EmployeeDB implements Database {
                 System.out.println("Create password: ");
 
             }
-            String[] firstandLast = name.split(" ");
-            String firstName = firstandLast[0];
-            String lastName = firstandLast[1];
 
             PreparedStatement pstmt = conn.prepareStatement(nameInserts);
             pstmt.setInt(1, id);
@@ -115,9 +112,9 @@ public class EmployeeDB implements Database {
         String nameInserts = "";
         String valueToChangeTo = "";
         System.out.println("What would you like to change? (first name, last name, job title, or pay rate)");
-        String type = scan.nextLine();
+
         System.out.println("What would you like to change it to?");
-        valueToChangeTo = scan.next();
+
             try {
             conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Employee");

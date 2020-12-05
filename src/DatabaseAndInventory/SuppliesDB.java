@@ -1,85 +1,63 @@
 package DatabaseAndInventory;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Scanner;
 
-public class EquipmentDB  {
+public class SuppliesDB implements Database{
     Connection conn;
     Scanner scan = new Scanner(System.in);
 
     /**
      * creates the equipment database if not yet created
      */
-    public void createEquipmentDB() {
-        try {
+    public void createSuppliesDB() throws SQLException {
+
             conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
 
             Statement stmt = conn.createStatement();
-            stmt.execute("CREATE TABLE IF NOT EXISTS Equipment (\n" +
+            stmt.execute("CREATE TABLE IF NOT EXISTS Supplies (\n" +
                     "    itemId       INTEGER        PRIMARY KEY,\n" +
                     "    itemName VARCHAR,\n" +
-                    "    purchaseDate  VARCHAR,\n" +
+                    "    ExpireDate  VARCHAR,\n" +
                     "    quantity NUMERIC,\n" +
                     "    category  VARCHAR,\n" +
                     "    unitPrice   NUMERIC (6, 2)\n" +
                     ");");
 
             stmt.close();
-        } catch (SQLException e) {
-            System.out.println("Could not connect to database or create table");
-            e.printStackTrace();
-        }
     }
 
     /**
-     * Adds new equipment to database
-     * @param amountToAdd the amount of items the user wants to add
+     * Adds new supplies to database
+     * @param name the amount of items the user wants to add
      * @throws SQLException
      */
-    public void addToDB(int amountToAdd) throws SQLException {
+    public void addToDB(String name, String category, String expireDate, String quantity, double unitPrice) throws SQLException {
         conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
         Statement selectStmt = conn.createStatement();
         String nameInserts;
+        LocalDate date = LocalDate.now();
 
-        int id = selectStmt.executeQuery("SELECT itemId FROM Equipment ORDER BY itemId DESC LIMIT 1;")
+        int id = selectStmt.executeQuery("SELECT itemId FROM Supplies ORDER BY itemId DESC LIMIT 1;")
                 .getInt("itemId") + 1;
 
-        nameInserts = "INSERT INTO Equipment (itemId, itemName, purchaseDate, quantity, category, unitPrice) VALUES "
+        nameInserts = "INSERT INTO Supplies (itemId, itemName, expireDate, quantity, category, unitPrice) VALUES "
                 + "(?, ?, ?, ?, ?, ?);";
-        for (int i = 0; i < amountToAdd; i++) {
-            String name = "";
-            String purchaseDate = "";
-            String category = "";
-            int quantity = 0;
-            double unitPrice = 0;
 
-            System.out.println("Enter item name:");
-            name = scan.nextLine();
-            System.out.println("Enter the expiration date:");
-            purchaseDate = scan.nextLine();
-            System.out.println("Enter item category:");
-            category = scan.nextLine();
-            System.out.println("Enter item quantity:");
-            quantity = scan.nextInt();
-            System.out.println("Enter item unit price:");
-            unitPrice = scan.nextDouble();
-            scan.nextLine();
-            try {
                 PreparedStatement pstmt = conn.prepareStatement(nameInserts);
-                pstmt.setInt(1, id + i);
+                pstmt.setInt(1, id);
                 pstmt.setString(2, name);
-                pstmt.setString(3, purchaseDate);
+                pstmt.setString(3, expireDate);
                 pstmt.setString(4, category);
-                pstmt.setInt(5, quantity);
+                pstmt.setInt(5, Integer.parseInt(quantity));
                 pstmt.setString(6, String.valueOf(unitPrice));
                 pstmt.executeUpdate();
 
                 pstmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+
             System.out.println("------------------------------------------");
-        }
+
     }
 
     /**
@@ -155,6 +133,11 @@ public class EquipmentDB  {
         }
     }
 
+    @Override
+    public String searchDB(int id) {
+        return null;
+    }
+
     /**
      * Removes equipment from database based on passed id
      * @param itemId id of item to be removed
@@ -177,7 +160,7 @@ public class EquipmentDB  {
     public String printDB(){
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
-            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Equipment ORDER BY itemId");
+            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Supplies ORDER BY itemId");
             ResultSet nameRS = pstmt.executeQuery();
             StringBuilder dbPrint = new StringBuilder();
             while (nameRS.next()) {
@@ -186,7 +169,7 @@ public class EquipmentDB  {
                 }else {
                     dbPrint.append("Item: ").append(nameRS.getString("itemName"))
                             .append(" (").append(nameRS.getInt("itemId"))
-                            .append("), Purchased on ").append(nameRS.getString("purchaseDate"))
+                            .append("), expires: ").append(nameRS.getString("expireDate"))
                             .append(", quantity remaining: ").append(nameRS.getInt("quantity"))
                             .append(", category: ").append(nameRS.getString("category"))
                             .append(", unit price: ").append(nameRS.getString("unitPrice"))

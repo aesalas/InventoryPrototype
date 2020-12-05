@@ -1,13 +1,10 @@
 package event.Controllers;
 
-import DatabaseAndInventory.ConsumDB;
 import DatabaseAndInventory.EmployeeDB;
-import DatabaseAndInventory.EquipmentDB;
+import DatabaseAndInventory.OrderDB;
+import DatabaseAndInventory.SuppliesDB;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -23,7 +20,7 @@ public class AddDB {
     @FXML
     private MenuItem equip;
     @FXML
-    private MenuItem consum;
+    private MenuItem orders;
     @FXML
     private TextField text1;
     @FXML
@@ -32,6 +29,8 @@ public class AddDB {
     private TextField text3;
     @FXML
     private TextField text4;
+    @FXML
+    private TextField text5;
     @FXML
     private Label label1;
     @FXML
@@ -45,18 +44,18 @@ public class AddDB {
 
     // initialize database objects to be used when displaying
     EmployeeDB employee = new EmployeeDB();
-    EquipmentDB equipment = new EquipmentDB();
-    ConsumDB consumable = new ConsumDB();
+    SuppliesDB supplies = new SuppliesDB();
+    OrderDB order = new OrderDB();
 
     public void enterActivated(ActionEvent actionEvent) throws SQLException {
         if(employ.isVisible()){
-            employee.addToDB(String.valueOf(text1),String.valueOf(text2),String.valueOf(text3),Double.parseDouble(String.valueOf(text4)));
+            employee.addToDB(String.valueOf(text1),String.valueOf(text2),String.valueOf(text3),String.valueOf(text4),Double.parseDouble(String.valueOf(text5)));
             message.setText("Successfully added");
         }else if(equip.isVisible()){
-            equipment.addToDB(String.valueOf(text1),String.valueOf(text2),String.valueOf(text3),Double.parseDouble(String.valueOf(text4)));
+            supplies.addToDB(String.valueOf(text1),String.valueOf(text2),String.valueOf(text3),String.valueOf(text4),Double.parseDouble(String.valueOf(text5)));
             message.setText("Successfully added");
-        }else if(consum.isVisible()){
-            consumable.addToDB(String.valueOf(text1),String.valueOf(text2),String.valueOf(text3),Double.parseDouble(String.valueOf(text4)));
+        }else if(orders.isVisible()){
+            order.addToDB(String.valueOf(text1),String.valueOf(text2),String.valueOf(text3),String.valueOf(text4),Double.parseDouble(String.valueOf(text5)));
             message.setText("Successfully added");
         }else{
             message.setText("Error, Please try again");

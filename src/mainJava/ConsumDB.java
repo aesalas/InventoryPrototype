@@ -4,7 +4,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.Scanner;
 
-public class ConsumDB implements Database {
+public class ConsumDB {
     Connection conn;
     Scanner scan = new Scanner(System.in);
     String Expiration = "";
@@ -15,7 +15,7 @@ public class ConsumDB implements Database {
      */
     public void createConsumDB() {
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/inventories.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
 
             Statement stmt = conn.createStatement();
             stmt.execute("CREATE TABLE IF NOT EXISTS Consumables (\n" +
@@ -39,7 +39,7 @@ public class ConsumDB implements Database {
      * @throws SQLException
      */
     public void addToDB(int amountToAdd) throws SQLException {
-        conn = DriverManager.getConnection("jdbc:sqlite:src/data/inventories.db");
+        conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
         Statement selectStmt = conn.createStatement();
         String nameInserts;
 
@@ -92,7 +92,7 @@ public class ConsumDB implements Database {
         System.out.println("What name would you like to search for: ");
         String searchName = scan.nextLine();
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/inventories.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
             PreparedStatement pstmt = conn.prepareStatement("SELECT itemId, itemName FROM Consumables WHERE itemName LIKE ?");
             pstmt.setString(1, searchName + "%");
             ResultSet nameRS = pstmt.executeQuery();
@@ -124,7 +124,7 @@ public class ConsumDB implements Database {
         System.out.println("What would you like to change it to?");
         valueToChangeTo = scan.next();
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/inventories.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Consumables");
 
             if(type.equalsIgnoreCase("name")){
@@ -163,7 +163,7 @@ public class ConsumDB implements Database {
      */
     public void removeFromDB(int itemId){
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/inventories.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
             PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Consumables WHERE itemId = ?");
             pstmt.setInt(1, itemId);
             pstmt.executeUpdate();
@@ -179,7 +179,7 @@ public class ConsumDB implements Database {
     public String printDB(){
         try {
 
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/inventories.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Consumables ORDER BY itemId");
             ResultSet nameRS = pstmt.executeQuery();
             StringBuilder dbPrint = new StringBuilder();

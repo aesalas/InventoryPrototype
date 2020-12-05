@@ -10,7 +10,7 @@ public class MainFx extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("views/DisplayDB.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("views/SignIn.fxml"));
         primaryStage.setTitle("Hello GUI!");
         primaryStage.setScene(new Scene(root, 537, 400));
         primaryStage.show();

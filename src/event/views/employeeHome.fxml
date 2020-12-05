@@ -13,15 +13,10 @@
       </Label>
       <SplitMenuButton layoutX="190.0" layoutY="188.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="157.0">
         <items>
-          <MenuItem fx:id="viewInventory" mnemonicParsing="false" text="View inventory" />
-          <MenuItem fx:id="requestSupplies" mnemonicParsing="false" text="Request supplies" />
+          <MenuItem fx:id="viewInventory" mnemonicParsing="false" onAction="#viewActivated" text="View inventory" />
+          <MenuItem fx:id="requestSupplies" mnemonicParsing="false" onAction="#requestActivated" text="Request supplies" />
         </items>
       </SplitMenuButton>
-      <Button fx:id="submit" layoutX="237.0" layoutY="242.0" mnemonicParsing="false" onAction="#submitActivated" text="Submit">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
       <Label fx:id="welcomeLbl" layoutX="121.0" layoutY="60.0" text="Welcome">
          <font>
             <Font size="28.0" />

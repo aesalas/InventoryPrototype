@@ -1,5 +1,9 @@
 package mainJava;
 
+import event.Controllers.SignIn;
+import javafx.scene.control.TextField;
+
+import java.awt.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -9,15 +13,17 @@ public class EmployeeDB implements Database {
     Connection conn;
     Scanner scan = new Scanner(System.in);
     String PASSWORD_COMBO = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!.,@#]).{8,20}$";
+    int OWNER_ID = 12345;
 
     /**
      * creates the employee database if not yet created
      */
     public void createEmployeeDB() {
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/inventories.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
 
             Statement stmt = conn.createStatement();
+
             stmt.execute("CREATE TABLE IF NOT EXISTS Employee (\n" +
                     "    eid       INTEGER        PRIMARY KEY,\n" +
                     "    firstName VARCHAR,\n" +
@@ -41,7 +47,7 @@ public class EmployeeDB implements Database {
      * @throws SQLException
      */
     public void addToDB(int amountToAdd) throws SQLException {
-        conn = DriverManager.getConnection("jdbc:sqlite:src/data/inventories.db");
+        conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
         Statement selectStmt = conn.createStatement();
         String nameInserts;
         LocalDate date = LocalDate.now();
@@ -97,32 +103,32 @@ public class EmployeeDB implements Database {
     }
 
     /**
-     *  Searches through database based on the last name entered by the user
-     * @return employee id of possible matches
+     *  Searches through database based on eid entered at sign in
+     * @return boolean
+     * @param eid
      */
-    public int searchDB(){
-        int eidValues = 0;
-        System.out.println("What last name would you like to search for: ");
-        String searchName = scan.nextLine();
+    public String searchDB(int eid){
             try {
-                conn = DriverManager.getConnection("jdbc:sqlite:src/data/inventories.db");
-                PreparedStatement pstmt = conn.prepareStatement("SELECT eid, firstName, lastName FROM Employee WHERE lastName LIKE ?");
-                pstmt.setString(1, searchName + "%");
+                conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
+                PreparedStatement pstmt = conn.prepareStatement("SELECT eid, password FROM Employee WHERE eid = ?");
+                pstmt.setString(1,  eid + "%");
                 ResultSet nameRS = pstmt.executeQuery();
 
-                while (nameRS.next()) {
-                    System.out.println("Possible match: "
-                            + nameRS.getString("firstName") + " "
-                            + nameRS.getString("lastName")+ " ("
-                            +  nameRS.getInt("eid")+ ")");
-                    eidValues = nameRS.getInt("eid");
-                }
-                return eidValues;
+                if(nameRS.getInt("eid") == eid) {
 
+                        if(nameRS.getInt("eid") == OWNER_ID) {
+                            return "own";
+                        }else{
+                            return "emp";
+                        }
+
+                }else {
+                    return "";
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        return -1;
+        return "";
     }
 
     /**
@@ -130,7 +136,7 @@ public class EmployeeDB implements Database {
      *
      */
     public void editDB(){
-        int eidToEdit = searchDB();
+        int eidToEdit = 123456;
         String nameInserts = "";
         String valueToChangeTo = "";
         System.out.println("What would you like to change? (first name, last name, job title, or pay rate)");
@@ -138,7 +144,7 @@ public class EmployeeDB implements Database {
         System.out.println("What would you like to change it to?");
         valueToChangeTo = scan.next();
             try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/inventories.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Employee");
 
                 //ResultSet nameRS = pstmt.executeQuery();
@@ -178,7 +184,7 @@ public class EmployeeDB implements Database {
      */
     public void removeFromDB(int eid){
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/inventories.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
             PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Employee WHERE eid = ?");
             pstmt.setInt(1, eid);
             pstmt.executeUpdate();
@@ -193,7 +199,7 @@ public class EmployeeDB implements Database {
      */
     public String printDB(){
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/inventories.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Employee ORDER BY eid");
             ResultSet nameRS = pstmt.executeQuery();
             StringBuilder dbPrint = new StringBuilder();
@@ -215,6 +221,25 @@ public class EmployeeDB implements Database {
             e.printStackTrace();
         }
         return "Error";
+    }
+
+    /**
+     * @param password and eid entered in SignIn.fxml to check
+     *                 if the password is correct
+     * @return true if password is correct, false if it is not
+     * @throws SQLException
+     */
+    public boolean checkPassword(String password, int eid) throws SQLException {
+        conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
+        PreparedStatement pstmt = conn.prepareStatement("SELECT password FROM Employee WHERE eid = ?");
+        pstmt.setString(1,  eid + "%");
+        ResultSet passwordRS = pstmt.executeQuery();
+
+        if(passwordRS.getString("password").equals(password)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }

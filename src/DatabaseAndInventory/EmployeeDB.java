@@ -53,13 +53,6 @@ public class EmployeeDB implements Database {
         nameInserts = "INSERT INTO Employee (eid, firstName, lastName, startDate, password, jobTitle, payrate) VALUES "
                 + "(?, ?, ?, ?, ?, ?, ?);";
 
-
-            while(!Pattern.matches(PASSWORD_COMBO,password)){
-                System.out.println("Password invalid. Make sure it is greater than 8 characters.");
-                System.out.println("Create password: ");
-
-            }
-
             PreparedStatement pstmt = conn.prepareStatement(nameInserts);
             pstmt.setInt(1, id);
             pstmt.setString(2, firstName);
@@ -211,6 +204,12 @@ public class EmployeeDB implements Database {
             return true;
         }else{
             return false;
+        }
+    }
+    public boolean isValidPassword(String password){
+        // Checks if password is valid
+        while(!Pattern.matches(PASSWORD_COMBO,password)){
+            // if it does not meet requirements, print error message and try again.
         }
     }
 

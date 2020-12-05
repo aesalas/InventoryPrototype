@@ -49,8 +49,13 @@ public class AddDB {
 
     public void enterActivated(ActionEvent actionEvent) throws SQLException {
         if(employ.isVisible()){
-            employee.addToDB(String.valueOf(text1),String.valueOf(text2),String.valueOf(text3),String.valueOf(text4),Double.parseDouble(String.valueOf(text5)));
-            message.setText("Successfully added");
+            if(employee.isValidPassword(String.valueOf(text4))) {
+                employee.addToDB(String.valueOf(text1), String.valueOf(text2), String.valueOf(text3), String.valueOf(text4), Double.parseDouble(String.valueOf(text5)));
+                message.setText("Successfully added");
+            }else{
+                message.setText("Password is Invalid. Make sure it is at least 8 characters and contains one of each of the following: \n " +
+                        "Uppercase, lowercase, Numbers, and Special Characters: '!' '.' ',' '@' '#'");
+            }
         }else if(equip.isVisible()){
             supplies.addToDB(String.valueOf(text1),String.valueOf(text2),String.valueOf(text3),String.valueOf(text4),Double.parseDouble(String.valueOf(text5)));
             message.setText("Successfully added");
@@ -62,13 +67,13 @@ public class AddDB {
         }
     }
 
-    public void equipSelected(ActionEvent actionEvent) throws IOException {
+    public void suppSelected(ActionEvent actionEvent) throws IOException {
         label1.setText("Item Name:");
         label2.setText("Quantity:");
         label3.setText("Category:");
         label4.setText("Unit Price:");
     }
-    public void consumSelected(ActionEvent actionEvent) throws IOException {
+    public void orderSelected(ActionEvent actionEvent) throws IOException {
         label1.setText("Item Name:");
         label2.setText("Quantity:");
         label3.setText("Category:");

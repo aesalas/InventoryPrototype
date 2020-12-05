@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="527.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"fx:controller="event.Controllers.AddDB">
+   <children>
+      <TextField fx:id="text1" layoutX="236.0" layoutY="135.0" promptText="First Name" />
+      <TextField fx:id="text2" layoutX="236.0" layoutY="172.0" promptText="Last Name" />
+      <TextField fx:id="text3" layoutX="236.0" layoutY="209.0" promptText="Job title" />
+      <TextField fx:id="text4" layoutX="236.0" layoutY="247.0" promptText="Password" />
+      <TextField fx:id="text5" layoutX="236.0" layoutY="283.0" promptText="Pay Rate" />
+      <SplitMenuButton fx:id="inventOptions" layoutX="271.0" layoutY="55.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="201.0" text="Employee">
+        <items>
+          <MenuItem fx:id="supply" mnemonicParsing="false" onAction="#suppSelected" text="Equipment" />
+            <MenuItem fx:id="orders" mnemonicParsing="false" onAction="#orderSelected" text="Orders" />
+        </items>
+      </SplitMenuButton>
+      <Label layoutX="29.0" layoutY="59.0" text="Select Inventory you would like to update: " />
+      <Label fx:id="label1" layoutX="169.0" layoutY="139.0" text="First name:" />
+      <Label fx:id="label2" layoutX="179.0" layoutY="214.0" text="Job Title:" />
+      <Label fx:id="label3" layoutX="135.0" layoutY="250.0" prefHeight="17.0" prefWidth="96.0" text="Create Password:" />
+      <Label fx:id="label4" layoutX="174.0" layoutY="287.0" prefHeight="17.0" prefWidth="57.0" text="Pay Rate:" />
+      <Button fx:id="enterBtn" layoutX="434.0" layoutY="296.0" mnemonicParsing="false" onAction="#enterActivated" text="Enter" />
+      <Label fx:id="message" layoutX="85.0" layoutY="342.0" prefHeight="32.0" prefWidth="356.0" text="Password is Invalid. Make sure it is at least 8 characters and contains one of each of the following: \n "
+      "Uppercase, lowercase, Numbers, and Special Characters: '!' '.' ',' '@' '#'"/>
+
+      <Label fx:id="label41" layoutX="169.0" layoutY="176.0" prefHeight="17.0" prefWidth="65.0" text="Last name:" />
+   </children>
+</Pane>

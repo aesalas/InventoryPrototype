@@ -6,7 +6,6 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class EmployeeDB implements Database {
-
     Connection conn;
     // Password constraints for regex
     String PASSWORD_COMBO = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!.,@#]).{8,20}$";
@@ -21,25 +20,25 @@ public class EmployeeDB implements Database {
      *  password (with constraints listed above), job title, and pay rate
      */
     public void createEmployeeDB() throws SQLException {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
-            Statement stmt = conn.createStatement();
-            stmt.execute("CREATE TABLE IF NOT EXISTS Employee (\n" +
-                    "    eid       INTEGER        PRIMARY KEY,\n" +
-                    "    firstName VARCHAR,\n" +
-                    "    lastName  VARCHAR,\n" +
-                    "    startDate VARCHAR,\n" +
-                    "    password  VARCHAR,\n" +
-                    "    jobTitle  VARCHAR,\n" +
-                    "    payrate   NUMERIC (6, 2)\n" +
-                    ");");
-            stmt.close();
+        conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
+        Statement stmt = conn.createStatement();
+        stmt.execute("CREATE TABLE IF NOT EXISTS Employee (\n" +
+                "    eid       INTEGER        PRIMARY KEY,\n" +
+                "    firstName VARCHAR,\n" +
+                "    lastName  VARCHAR,\n" +
+                "    startDate VARCHAR,\n" +
+                "    password  VARCHAR,\n" +
+                "    jobTitle  VARCHAR,\n" +
+                "    payrate   NUMERIC (6, 2)\n" +
+                ");");
+        stmt.close();
     }
 
     /**
      * Adds employee(s) to database
      * @throws SQLException
      */
-    public void addToDB(String firstName,String lastName, String password, String jobTitle, double payrate) throws SQLException {
+    public void addToDB(String firstName, String lastName, String password, String jobTitle, double payrate) throws SQLException {
         conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
         Statement selectStmt = conn.createStatement();
         String nameInserts;
@@ -68,29 +67,24 @@ public class EmployeeDB implements Database {
 
     /**
      *  Searches through database based on eid entered at sign in
-     * @return boolean
-     * @param eid
+     * @return boolean if the id is correct/exists
+     * @param eid of employee
      */
-    public String searchDB(int eid){
-            try {
-                conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
-                PreparedStatement pstmt = conn.prepareStatement("SELECT eid, password FROM Employee WHERE eid = ?");
-                pstmt.setString(1,  eid + "%");
-                ResultSet nameRS = pstmt.executeQuery();
+    public String searchDB(int eid) throws SQLException {
+        conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
+        PreparedStatement pstmt = conn.prepareStatement("SELECT eid FROM Employee WHERE eid = ?");
+        pstmt.setInt(1, eid);
+        ResultSet nameRS = pstmt.executeQuery();
 
-                if(nameRS.getInt("eid") == eid) {
-                        if(nameRS.getInt("eid") == OWNER_ID) {
-                            return "own";
-                        }else{
-                            return "emp";
-                        }
-                }else {
-                    return "";
+        if(nameRS.getInt("eid") == eid) {
+                if(nameRS.getInt("eid") == OWNER_ID) {
+                    return "own";
+                }else{
+                    return "emp";
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        return "";
+        }else {
+            return "error";
+        }
     }
 
     /**
@@ -131,8 +125,7 @@ public class EmployeeDB implements Database {
     /**
      * Prints entire Database
      */
-    public String printDB(){
-        try {
+    public String printDB() throws SQLException {
             conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Employee ORDER BY eid");
             ResultSet nameRS = pstmt.executeQuery();
@@ -151,10 +144,7 @@ public class EmployeeDB implements Database {
             }
             dbPrint.append("-------------------------------------------");
             return dbPrint.toString();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return "Error";
+
     }
 
     /**

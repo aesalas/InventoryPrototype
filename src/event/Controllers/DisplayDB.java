@@ -1,5 +1,6 @@
 package event.Controllers;
 
+import DatabaseAndInventory.OrderDB;
 import DatabaseAndInventory.SuppliesDB;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,10 +9,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import DatabaseAndInventory.ConsumDB;
 import DatabaseAndInventory.EmployeeDB;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Controller for displayDB.fxml to display database info
@@ -36,7 +37,7 @@ public class DisplayDB {
     }
 
     // Based on the menu item selected, display info
-    //public void orderSelected(ActionEvent actionEvent) {displayArea.setText(ord.printDB()); }
-    public void suppSelected(ActionEvent actionEvent) { displayArea.setText(supp.printDB()); }
-    public void empSelected(ActionEvent actionEvent) { displayArea.setText(employ.printDB()); }
+    public void orderSelected(ActionEvent actionEvent) throws SQLException {displayArea.setText(ord.printDB()); }
+    public void suppSelected(ActionEvent actionEvent)  throws SQLException { displayArea.setText(supp.printDB()); }
+    public void empSelected(ActionEvent actionEvent) throws SQLException { displayArea.setText(employ.printDB()); }
 }

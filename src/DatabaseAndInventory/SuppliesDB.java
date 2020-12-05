@@ -9,23 +9,20 @@ public class SuppliesDB implements Database{
     Scanner scan = new Scanner(System.in);
 
     /**
-     * creates the equipment database if not yet created
+     * creates the supplies database if not yet created
      */
     public void createSuppliesDB() throws SQLException {
-
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
-
-            Statement stmt = conn.createStatement();
-            stmt.execute("CREATE TABLE IF NOT EXISTS Supplies (\n" +
-                    "    itemId       INTEGER        PRIMARY KEY,\n" +
-                    "    itemName VARCHAR,\n" +
-                    "    ExpireDate  VARCHAR,\n" +
-                    "    quantity NUMERIC,\n" +
-                    "    category  VARCHAR,\n" +
-                    "    unitPrice   NUMERIC (6, 2)\n" +
-                    ");");
-
-            stmt.close();
+        conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
+        Statement stmt = conn.createStatement();
+        stmt.execute("CREATE TABLE IF NOT EXISTS Supplies (\n" +
+                "    itemId       INTEGER        PRIMARY KEY,\n" +
+                "    itemName VARCHAR,\n" +
+                "    ExpireDate  VARCHAR,\n" +
+                "    quantity NUMERIC,\n" +
+                "    category  VARCHAR,\n" +
+                "    unitPrice   NUMERIC (6, 2)\n" +
+                ");");
+        stmt.close();
     }
 
     /**
@@ -37,7 +34,6 @@ public class SuppliesDB implements Database{
         conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
         Statement selectStmt = conn.createStatement();
         String nameInserts;
-        LocalDate date = LocalDate.now();
 
         int id = selectStmt.executeQuery("SELECT itemId FROM Supplies ORDER BY itemId DESC LIMIT 1;")
                 .getInt("itemId") + 1;
@@ -45,142 +41,88 @@ public class SuppliesDB implements Database{
         nameInserts = "INSERT INTO Supplies (itemId, itemName, expireDate, quantity, category, unitPrice) VALUES "
                 + "(?, ?, ?, ?, ?, ?);";
 
-                PreparedStatement pstmt = conn.prepareStatement(nameInserts);
-                pstmt.setInt(1, id);
-                pstmt.setString(2, name);
-                pstmt.setString(3, expireDate);
-                pstmt.setString(4, category);
-                pstmt.setInt(5, Integer.parseInt(quantity));
-                pstmt.setString(6, String.valueOf(unitPrice));
-                pstmt.executeUpdate();
+        PreparedStatement pstmt = conn.prepareStatement(nameInserts);
+        pstmt.setInt(1, id);
+        pstmt.setString(2, name);
+        pstmt.setString(3, expireDate);
+        pstmt.setString(4, category);
+        pstmt.setInt(5, Integer.parseInt(quantity));
+        pstmt.setString(6, String.valueOf(unitPrice));
+        pstmt.executeUpdate();
 
-                pstmt.close();
-
-            System.out.println("------------------------------------------");
-
+        pstmt.close();
     }
 
     /**
      *  Searches through database based on the name entered by user
      * @return employee id of first match
      */
-    public int searchDB(){
-        int itemId = 0;
-        int count = 0;
-        System.out.println("What is the item name would you like to search for: ");
-        String searchName = scan.nextLine();
-        try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
-            PreparedStatement pstmt = conn.prepareStatement("SELECT itemId, itemName FROM Equipment WHERE itemName LIKE ?");
-            pstmt.setString(1, searchName + "%");
-            ResultSet nameRS = pstmt.executeQuery();
-
-            while (nameRS.next()) {
-                System.out.println("Possible match: "
-                        + nameRS.getString("itemName") + " ("
-                        + nameRS.getInt("itemId")+ ")");
-                count++;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public String searchDB(int itemId) throws SQLException {
+        conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
+        PreparedStatement pstmt = conn.prepareStatement("SELECT itemId FROM Supplies WHERE itemId = ?");
+        pstmt.setInt(1, itemId);
+        ResultSet nameRS = pstmt.executeQuery();
+        if(nameRS.getInt("itemId") == itemId) {
+            return "exists";
+        }else {
+            return "error";
         }
-        return -1;
     }
 
     /**
-     * Edits equipment database based on the category and id using user input
-     * Uses searchDB() to get item id
+     * Edits supply database based on the category and id using user input
      */
-    public void editDB(){
-        int idToEdit = searchDB();
-        String nameInserts;
-        String valueToChangeTo;
-        System.out.println("What would you like to change? (Item name, quantity, category, or unit price)");
-        String type = scan.nextLine();
-        System.out.println("What would you like to change it to?");
-        valueToChangeTo = scan.next();
-        try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
-            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Equipment");
+    public void editDB(int idToEdit, String fieldToEdit, String newValue) throws SQLException {
+        conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
+        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Equipment");
+        if(fieldToEdit.equalsIgnoreCase("name")){
+            pstmt = conn.prepareStatement("UPDATE Equipment SET itemName = ? WHERE itemId = ?;");
+        }else if(fieldToEdit.equalsIgnoreCase("quantity")){
+            pstmt = conn.prepareStatement("UPDATE Equipment SET quantity = ? WHERE itemId = ?;");
+        }else if(fieldToEdit.equalsIgnoreCase("category")){
+            pstmt = conn.prepareStatement("UPDATE Equipment SET category = ? WHERE itemId = ?;");
+        }else if (fieldToEdit.equalsIgnoreCase("unit price")){
+            pstmt = conn.prepareStatement("UPDATE Equipment SET unitPrice = ? WHERE itemId = ?;");
 
-            if(type.equalsIgnoreCase("name")){
-                nameInserts = "UPDATE Equipment SET itemName = ? WHERE itemId = ?;";
-                pstmt = conn.prepareStatement(nameInserts);
-                pstmt.setString(1, valueToChangeTo);
-                pstmt.setInt(2, idToEdit);
-            }else if(type.equalsIgnoreCase("quantity")){
-                nameInserts = "UPDATE Equipment SET quantity = ? WHERE itemId = ?;";
-                pstmt = conn.prepareStatement(nameInserts);
-                pstmt.setString(1, valueToChangeTo);
-                pstmt.setInt(2, idToEdit);
-            }else if(type.equalsIgnoreCase("category")){
-                nameInserts = "UPDATE Equipment SET category = ? WHERE itemId = ?;";
-                pstmt = conn.prepareStatement(nameInserts);
-                pstmt.setString(1, valueToChangeTo);
-                pstmt.setInt(2, idToEdit);
-            }else if (type.equalsIgnoreCase("unit price")){
-                nameInserts = "UPDATE Equipment SET unitPrice = ? WHERE itemId = ?;";
-                pstmt = conn.prepareStatement(nameInserts);
-                pstmt.setString(1, valueToChangeTo);
-                pstmt.setInt(2, idToEdit);
-            }else{
-                System.out.println("invalid input");
-            }
-            pstmt.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
-    }
-
-    @Override
-    public String searchDB(int id) {
-        return null;
+        pstmt.setString(1, newValue);
+        pstmt.setInt(2, idToEdit);
+        pstmt.executeUpdate();
     }
 
     /**
-     * Removes equipment from database based on passed id
+     * Removes supply from database based on passed id
      * @param itemId id of item to be removed
      */
-    public void removeFromDB(int itemId){
-        try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
-            PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Equipment WHERE itemId = ?");
-            pstmt.setInt(1, itemId);
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public void removeFromDB(int itemId) throws SQLException{
+        conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
+        PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Supply WHERE itemId = ?");
+        pstmt.setInt(1, itemId);
+        pstmt.executeUpdate();
     }
 
     /**
      * Prints entire Database
      */
-    public String printDB(){
-        try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
-            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Supplies ORDER BY itemId");
-            ResultSet nameRS = pstmt.executeQuery();
-            StringBuilder dbPrint = new StringBuilder();
-            while (nameRS.next()) {
-                if(nameRS.isFirst()){
-                    dbPrint = new StringBuilder("------------------------------------------\n");
-                }else {
-                    dbPrint.append("Item: ").append(nameRS.getString("itemName"))
-                            .append(" (").append(nameRS.getInt("itemId"))
-                            .append("), expires: ").append(nameRS.getString("expireDate"))
-                            .append(", quantity remaining: ").append(nameRS.getInt("quantity"))
-                            .append(", category: ").append(nameRS.getString("category"))
-                            .append(", unit price: ").append(nameRS.getString("unitPrice"))
-                            .append("\n");
-                }
+    public String printDB() throws SQLException {
+        conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
+        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Supplies ORDER BY itemId");
+        ResultSet nameRS = pstmt.executeQuery();
+        StringBuilder dbPrint = new StringBuilder();
+        while (nameRS.next()) {
+            if(nameRS.isFirst()){
+                dbPrint = new StringBuilder("------------------------------------------\n");
+            }else {
+                dbPrint.append("Item: ").append(nameRS.getString("itemName"))
+                        .append(" (").append(nameRS.getInt("itemId"))
+                        .append("), expires: ").append(nameRS.getString("expireDate"))
+                        .append(", quantity remaining: ").append(nameRS.getInt("quantity"))
+                        .append(", category: ").append(nameRS.getString("category"))
+                        .append(", unit price: ").append(nameRS.getString("unitPrice"))
+                        .append("\n");
             }
-            dbPrint.append("-------------------------------------------");
-            return dbPrint.toString();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return "Error";
+        dbPrint.append("-------------------------------------------");
+        return dbPrint.toString();
     }
 }

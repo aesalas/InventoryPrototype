@@ -17,3 +17,5 @@ Features:
     - Request supplies
     - Run automated checks
   4. Inventory database of both Inventory and Orders
+
+*** note: This project is not fully complete, i.e. it has partial functionality  ***

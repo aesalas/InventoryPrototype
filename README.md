@@ -18,4 +18,4 @@ Features:
     - Run automated checks
   4. Inventory database of both Inventory and Orders
 
-*** note: This project is not fully complete, i.e. it has partial functionality (12/4/2020, 10:53)***
+*** note: This project is not fully complete, i.e. it has partial functionality***

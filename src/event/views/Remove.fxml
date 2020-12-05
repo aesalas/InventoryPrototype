@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="event.views.Remove"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="537.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="event.Controllers.RemoveDB">
+<children>
+    <Label layoutX="172.0" layoutY="123.0" text="Enter the id you would like to remove: ">
+        <font>
+            <Font size="16.0" />
+        </font>
+    </Label>
+    <TextField fx:id="id" layoutX="218.0" layoutY="179.0" />
+    <SplitMenuButton fx:id="employ" layoutX="271.0" layoutY="55.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="201.0" text="Employee">
+        <items>
+            <MenuItem fx:id="supp" mnemonicParsing="false" text="Equipment" />
+            <MenuItem fx:id="orders" mnemonicParsing="false" text="Orders" />
+        </items>
+    </SplitMenuButton>
+    <Button fx:id="enterBtn" layoutX="434.0" layoutY="296.0" mnemonicParsing="false" onAction="#enterActivated" text="Enter" />
+</children>
+</Pane>

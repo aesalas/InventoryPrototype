@@ -121,16 +121,11 @@ public class EmployeeDB implements Database {
      * Removes employee from database based on passed id
      * @param eid id of employee to be removed
      */
-    public void removeFromDB(int eid){
-        try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
-            PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Employee WHERE eid = ?");
-            pstmt.setInt(1, eid);
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public void removeFromDB(int eid) throws SQLException {
+        conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
+        PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Employee WHERE eid = ?");
+        pstmt.setInt(1, eid);
+        pstmt.executeUpdate();
     }
 
     /**
@@ -180,11 +175,15 @@ public class EmployeeDB implements Database {
             return false;
         }
     }
+
+    /**
+     * Ensures that password being created has all requirements
+     * @param password
+     * @return
+     */
     public boolean isValidPassword(String password){
         // Checks if password is valid
-        while(!Pattern.matches(PASSWORD_COMBO,password)){
-            // if it does not meet requirements, print error message and try again.
-        }
+        return Pattern.matches(PASSWORD_COMBO,password);
     }
 
 }

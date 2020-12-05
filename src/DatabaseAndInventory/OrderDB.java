@@ -137,16 +137,11 @@ public class OrderDB implements Database {
      * Removes item from database based on passed in id
      * @param itemId id of item to be removed
      */
-    public void removeFromDB(int itemId){
-        try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
-            PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Consumables WHERE itemId = ?");
-            pstmt.setInt(1, itemId);
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public void removeFromDB(int itemId) throws SQLException {
+        conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
+        PreparedStatement pstmt = conn.prepareStatement("DELETE FROM PurchaseOrder WHERE itemId = ?");
+        pstmt.setInt(1, itemId);
+        pstmt.executeUpdate();
     }
 
     /**

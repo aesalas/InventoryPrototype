@@ -21,17 +21,9 @@ public class EditDB {
     @FXML
     private MenuItem supp;
     @FXML
-    private MenuItem orders;
-    @FXML
     private TextField input1;
     @FXML
     private TextField input2;
-    @FXML
-    private TextField input3;
-    @FXML
-    private TextField input4;
-    @FXML
-    private TextField input5;
     @FXML
     private Label category1;
     @FXML
@@ -46,34 +38,29 @@ public class EditDB {
     // initialize database objects to be used when displaying
     EmployeeDB employee = new EmployeeDB();
     SuppliesDB supplies = new SuppliesDB();
-    OrderDB order = new OrderDB();
 
     public void enterActivated(ActionEvent actionEvent) throws SQLException {
         if(employ.isVisible()){
             employee.editDB(Integer.parseInt(String.valueOf(input1)), String.valueOf(category1) ,String.valueOf(input2));
-
-
-
         }else if(supp.isVisible()){
-
-
-        }else if(orders.isVisible()){
-
+            supplies.editDB(Integer.parseInt(String.valueOf(input1)), String.valueOf(category1) ,String.valueOf(input2));
         }else{
-
+            message.setText("Something went wrong. Try again.");
         }
     }
 
-    public void suppSelected(ActionEvent actionEvent) throws IOException {
+    public void suppSelected(ActionEvent actionEvent) {
         category1.setText("Item Name:");
         category2.setText("Quantity:");
         category3.setText("Category:");
         category4.setText("Unit Price:");
     }
-    public void orderSelected(ActionEvent actionEvent) throws IOException {
-        category1.setText("Item Name:");
-        category2.setText("Quantity:");
-        category3.setText("Category:");
-        category4.setText("Unit Price:");
+
+    public void EmpSelected(ActionEvent actionEvent) {
+        category1.setText("First name:");
+        category2.setText("Last name:");
+        category3.setText("Job title:");
+        category4.setText("Pay rate:");
     }
+
 }

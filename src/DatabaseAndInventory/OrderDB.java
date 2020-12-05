@@ -83,16 +83,16 @@ public class OrderDB implements Database {
      */
     public void editDB(int idToEdit, String fieldToEdit, String newValue) throws SQLException {
         conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
-        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Consumables");
+        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM PurchaseOrder");
 
-        if(fieldToEdit.equalsIgnoreCase("name")){
-            pstmt = conn.prepareStatement("UPDATE Consumables SET itemName = ? WHERE itemId = ?;");
+        if(fieldToEdit.equalsIgnoreCase("Name")){
+            pstmt = conn.prepareStatement("UPDATE PurchaseOrder SET itemName = ? WHERE itemId = ?;");
         }else if(fieldToEdit.equalsIgnoreCase("quantity")){
-            pstmt = conn.prepareStatement("UPDATE Consumables SET quantity = ? WHERE itemId = ?;");
+            pstmt = conn.prepareStatement("UPDATE PurchaseOrder SET quantity = ? WHERE itemId = ?;");
         }else if(fieldToEdit.equalsIgnoreCase("category")){
-            pstmt = conn.prepareStatement("UPDATE Consumables SET category = ? WHERE itemId = ?;");
-        }else if (fieldToEdit.equalsIgnoreCase("unit price")){
-            pstmt = conn.prepareStatement("UPDATE Consumables SET unitPrice = ? WHERE itemId = ?;");
+            pstmt = conn.prepareStatement("UPDATE PurchaseOrder SET category = ? WHERE itemId = ?;");
+        }else if (fieldToEdit.equalsIgnoreCase("totalCost")){
+            pstmt = conn.prepareStatement("UPDATE PurchaseOrder SET unitPrice = ? WHERE itemId = ?;");
         }
         pstmt.setString(1, newValue);
         pstmt.setInt(2, idToEdit);

@@ -8,15 +8,15 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="527.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="event.Controllers.EditDB">
 <children>
-    <TextField fx:id="input1" layoutX="236.0" layoutY="135.0" promptText="First Name" />
-    <TextField fx:id="input2" layoutX="236.0" layoutY="172.0" promptText="Last Name" />
-    <TextField fx:id="input3" layoutX="236.0" layoutY="209.0" promptText="Job title" />
-    <TextField fx:id="input4" layoutX="236.0" layoutY="247.0" promptText="Password" />
-    <TextField fx:id="input5" layoutX="236.0" layoutY="283.0" promptText="Pay Rate" />
-    <SplitMenuButton fx:id="employ" layoutX="271.0" layoutY="55.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="201.0" text="Employee">
+    <TextField fx:id="input1" layoutX="236.0" layoutY="135.0" />
+    <TextField fx:id="input2" layoutX="236.0" layoutY="172.0" />
+    <TextField fx:id="input3" layoutX="236.0" layoutY="209.0" />
+    <TextField fx:id="input4" layoutX="236.0" layoutY="247.0" />
+    <TextField fx:id="input5" layoutX="236.0" layoutY="283.0" />
+    <SplitMenuButton layoutX="271.0" layoutY="55.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="201.0">
         <items>
             <MenuItem fx:id="supp" mnemonicParsing="false" onAction="#suppSelected" text="Equipment" />
-            <MenuItem fx:id="orders" mnemonicParsing="false" onAction="#orderSelected" text="Orders" />
+            <MenuItem fx:id="employ" mnemonicParsing="false" onAction="#EmpSelected" text="Orders" />
         </items>
     </SplitMenuButton>
     <Label layoutX="29.0" layoutY="59.0" text="Select Inventory you would like to update: " />

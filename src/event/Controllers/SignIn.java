@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import mainJava.EmployeeDB;
+import DatabaseAndInventory.EmployeeDB;
 
 import java.io.IOException;
 import java.sql.SQLException;

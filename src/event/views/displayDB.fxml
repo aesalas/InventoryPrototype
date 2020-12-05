@@ -11,7 +11,7 @@
         <items>
           <MenuItem fx:id="consumables" mnemonicParsing="false" onAction="#consumSelected" text="Consumables" />
           <MenuItem fx:id="equipment" mnemonicParsing="false" onAction="#equipSelected" text="Equipment" />
-            <MenuItem fx:id="employee" mnemonicParsing="false" onAction="#empSelected" text="Employee" />
+          <MenuItem fx:id="employee" mnemonicParsing="false" onAction="#empSelected" text="Employee" />
         </items>
       </SplitMenuButton>
    </children>

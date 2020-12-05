@@ -7,9 +7,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import mainJava.ConsumDB;
-import mainJava.EmployeeDB;
-import mainJava.EquipmentDB;
+import DatabaseAndInventory.ConsumDB;
+import DatabaseAndInventory.EmployeeDB;
+import DatabaseAndInventory.EquipmentDB;
 
 import java.io.IOException;
 

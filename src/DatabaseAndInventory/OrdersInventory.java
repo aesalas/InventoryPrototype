@@ -1,4 +1,4 @@
-package mainJava;
+package DatabaseAndInventory;
 
 public class OrdersInventory{
     EmployeeDB emp = new EmployeeDB();

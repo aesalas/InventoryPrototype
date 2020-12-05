@@ -1,4 +1,4 @@
-package mainJava;
+package DatabaseAndInventory;
 
 import java.sql.*;
 import java.util.Scanner;

@@ -1,29 +1,28 @@
-package mainJava;
+package DatabaseAndInventory;
 
-import event.Controllers.SignIn;
-import javafx.scene.control.TextField;
-
-import java.awt.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class EmployeeDB implements Database {
+
     Connection conn;
-    Scanner scan = new Scanner(System.in);
+    // Password constraints for regex
     String PASSWORD_COMBO = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!.,@#]).{8,20}$";
+    // owner id for access to certain pages, employees cant access
     int OWNER_ID = 12345;
 
     /**
-     * creates the employee database if not yet created
+     * Creates the employee database if not yet created.
+     * Employee database should have the following:
+     *  employee id, first name, last name,
+     *  starting date (automatically set to day employee was added),
+     *  password (with constraints listed above), job title, and pay rate
      */
-    public void createEmployeeDB() {
-        try {
+    public void createEmployeeDB() throws SQLException {
             conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
-
             Statement stmt = conn.createStatement();
-
             stmt.execute("CREATE TABLE IF NOT EXISTS Employee (\n" +
                     "    eid       INTEGER        PRIMARY KEY,\n" +
                     "    firstName VARCHAR,\n" +
@@ -33,73 +32,49 @@ public class EmployeeDB implements Database {
                     "    jobTitle  VARCHAR,\n" +
                     "    payrate   NUMERIC (6, 2)\n" +
                     ");");
-
             stmt.close();
-        } catch (SQLException e) {
-            System.out.println("Could not connect to database or create table");
-            e.printStackTrace();
-        }
     }
 
     /**
      * Adds employee(s) to database
-     * @param amountToAdd the amount of employees the user wishes to add
      * @throws SQLException
      */
-    public void addToDB(int amountToAdd) throws SQLException {
+    public void addToDB(String name, String password, String jobTitle, double payrate) throws SQLException {
         conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
         Statement selectStmt = conn.createStatement();
         String nameInserts;
-        LocalDate date = LocalDate.now();
 
+        // local date for starting date
+        LocalDate date = LocalDate.now();
 
         int id = selectStmt.executeQuery("SELECT eid FROM Employee ORDER BY eid DESC LIMIT 1;")
                     .getInt("eid") + 1;
 
         nameInserts = "INSERT INTO Employee (eid, firstName, lastName, startDate, password, jobTitle, payrate) VALUES "
                 + "(?, ?, ?, ?, ?, ?, ?);";
-        for (int i = 0; i < amountToAdd; i++) {
-            String firstName = "";
-            String lastName = "";
-            String password = "";
-            String jobTitle = "";
-            double payrate = 0;
 
-            System.out.println("Enter first name:");
-            firstName = scan.nextLine();
-            System.out.println("Enter last name");
-            lastName = scan.nextLine();
-            System.out.println("Enter job title:");
-            jobTitle = scan.nextLine();
-            System.out.println("Enter pay rate:");
-            payrate = scan.nextDouble();
-            scan.nextLine();
-            System.out.println("Create password:");
-            password = scan.nextLine();
 
             while(!Pattern.matches(PASSWORD_COMBO,password)){
                 System.out.println("Password invalid. Make sure it is greater than 8 characters.");
                 System.out.println("Create password: ");
-                password = scan.nextLine();
-            }
 
-            try {
-                PreparedStatement pstmt = conn.prepareStatement(nameInserts);
-                pstmt.setInt(1, id + i);
-                pstmt.setString(2, firstName);
-                pstmt.setString(3, lastName);
-                pstmt.setString(4, String.valueOf(date));
-                pstmt.setString(5, password);
-                pstmt.setString(6, jobTitle);
-                pstmt.setString(7, String.valueOf(payrate));
-                pstmt.executeUpdate();
-
-                pstmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
-            System.out.println("------------------------------------------");
-        }
+            String[] firstandLast = name.split(" ");
+            String firstName = firstandLast[0];
+            String lastName = firstandLast[1];
+
+            PreparedStatement pstmt = conn.prepareStatement(nameInserts);
+            pstmt.setInt(1, id);
+            pstmt.setString(2, firstName);
+            pstmt.setString(3, lastName);
+            pstmt.setString(4, String.valueOf(date));
+            pstmt.setString(5, password);
+            pstmt.setString(6, jobTitle);
+            pstmt.setString(7, String.valueOf(payrate));
+            pstmt.executeUpdate();
+
+            pstmt.close();
+
     }
 
     /**

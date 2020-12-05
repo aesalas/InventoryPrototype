@@ -15,30 +15,31 @@ import java.sql.SQLException;
 
 public class AddDB {
     Stage primaryStage = null;
+
     @FXML
     private MenuItem employ;
     @FXML
-    private MenuItem equip;
+    private MenuItem supp;
     @FXML
     private MenuItem orders;
     @FXML
-    private TextField text1;
+    private TextField input1;
     @FXML
-    private TextField text2;
+    private TextField input2;
     @FXML
-    private TextField text3;
+    private TextField input3;
     @FXML
-    private TextField text4;
+    private TextField input4;
     @FXML
-    private TextField text5;
+    private TextField input5;
     @FXML
-    private Label label1;
+    private Label category1;
     @FXML
-    private Label label2;
+    private Label category2;
     @FXML
-    private Label label3;
+    private Label category3;
     @FXML
-    private Label label4;
+    private Label category4;
     @FXML
     private Label message;
 
@@ -49,18 +50,18 @@ public class AddDB {
 
     public void enterActivated(ActionEvent actionEvent) throws SQLException {
         if(employ.isVisible()){
-            if(employee.isValidPassword(String.valueOf(text4))) {
-                employee.addToDB(String.valueOf(text1), String.valueOf(text2), String.valueOf(text3), String.valueOf(text4), Double.parseDouble(String.valueOf(text5)));
+            if(employee.isValidPassword(String.valueOf(input4))) {
+                employee.addToDB(String.valueOf(input1), String.valueOf(input2), String.valueOf(input3), String.valueOf(input4), Double.parseDouble(String.valueOf(input5)));
                 message.setText("Successfully added");
             }else{
                 message.setText("Password is Invalid. Make sure it is at least 8 characters and contains one of each of the following: \n " +
                         "Uppercase, lowercase, Numbers, and Special Characters: '!' '.' ',' '@' '#'");
             }
-        }else if(equip.isVisible()){
-            supplies.addToDB(String.valueOf(text1),String.valueOf(text2),String.valueOf(text3),String.valueOf(text4),Double.parseDouble(String.valueOf(text5)));
+        }else if(supp.isVisible()){
+            supplies.addToDB(String.valueOf(input1),String.valueOf(input2),String.valueOf(input3),String.valueOf(input4),Double.parseDouble(String.valueOf(input5)));
             message.setText("Successfully added");
         }else if(orders.isVisible()){
-            order.addToDB(String.valueOf(text1),String.valueOf(text2),String.valueOf(text3),String.valueOf(text4),Double.parseDouble(String.valueOf(text5)));
+            order.addToDB(String.valueOf(input1),String.valueOf(input2),String.valueOf(input3),String.valueOf(input4),Double.parseDouble(String.valueOf(input5)));
             message.setText("Successfully added");
         }else{
             message.setText("Error, Please try again");
@@ -68,15 +69,15 @@ public class AddDB {
     }
 
     public void suppSelected(ActionEvent actionEvent) throws IOException {
-        label1.setText("Item Name:");
-        label2.setText("Quantity:");
-        label3.setText("Category:");
-        label4.setText("Unit Price:");
+        category1.setText("Item Name:");
+        category2.setText("Quantity:");
+        category3.setText("Category:");
+        category4.setText("Unit Price:");
     }
     public void orderSelected(ActionEvent actionEvent) throws IOException {
-        label1.setText("Item Name:");
-        label2.setText("Quantity:");
-        label3.setText("Category:");
-        label4.setText("Unit Price:");
+        category1.setText("Item Name:");
+        category2.setText("Quantity:");
+        category3.setText("Category:");
+        category4.setText("Unit Price:");
     }
 }

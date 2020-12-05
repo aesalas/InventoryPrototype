@@ -53,18 +53,17 @@ public class EmployeeDB implements Database {
         nameInserts = "INSERT INTO Employee (eid, firstName, lastName, startDate, password, jobTitle, payrate) VALUES "
                 + "(?, ?, ?, ?, ?, ?, ?);";
 
-            PreparedStatement pstmt = conn.prepareStatement(nameInserts);
-            pstmt.setInt(1, id);
-            pstmt.setString(2, firstName);
-            pstmt.setString(3, lastName);
-            pstmt.setString(4, String.valueOf(date));
-            pstmt.setString(5, password);
-            pstmt.setString(6, jobTitle);
-            pstmt.setString(7, String.valueOf(payrate));
-            pstmt.executeUpdate();
+        PreparedStatement pstmt = conn.prepareStatement(nameInserts);
+        pstmt.setInt(1, id);
+        pstmt.setString(2, firstName);
+        pstmt.setString(3, lastName);
+        pstmt.setString(4, String.valueOf(date));
+        pstmt.setString(5, password);
+        pstmt.setString(6, jobTitle);
+        pstmt.setString(7, String.valueOf(payrate));
+        pstmt.executeUpdate();
 
-            pstmt.close();
-
+        pstmt.close();
     }
 
     /**
@@ -80,13 +79,11 @@ public class EmployeeDB implements Database {
                 ResultSet nameRS = pstmt.executeQuery();
 
                 if(nameRS.getInt("eid") == eid) {
-
                         if(nameRS.getInt("eid") == OWNER_ID) {
                             return "own";
                         }else{
                             return "emp";
                         }
-
                 }else {
                     return "";
                 }
@@ -100,47 +97,24 @@ public class EmployeeDB implements Database {
      * Edits employee database based on the category entered by the user
      *
      */
-    public void editDB(){
-        int eidToEdit = 123456;
-        String nameInserts = "";
-        String valueToChangeTo = "";
-        System.out.println("What would you like to change? (first name, last name, job title, or pay rate)");
+    public void editDB(int idToEdit, String fieldToEdit, String newValue) throws SQLException {
+        conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
 
-        System.out.println("What would you like to change it to?");
+        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Employee WHERE eid = ?;");
 
-            try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/data/Inventory.db");
-            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Employee");
-
-                //ResultSet nameRS = pstmt.executeQuery();
-            if(type.equalsIgnoreCase("first name")){
-                nameInserts = "UPDATE Employee SET firstName = ? WHERE eid = ?;";
-                pstmt = conn.prepareStatement(nameInserts);
-                pstmt.setString(1, valueToChangeTo);
-                pstmt.setInt(2, eidToEdit);
-
-            }else if(type.equalsIgnoreCase("last name")){
-                nameInserts = "UPDATE Employee SET lastName = ? WHERE eid = ?;";
-                pstmt = conn.prepareStatement(nameInserts);
-                pstmt.setString(1, valueToChangeTo);
-                pstmt.setInt(2, eidToEdit);
-            }else if(type.equalsIgnoreCase("job title")){
-                nameInserts = "UPDATE Employee SET jobTitle = ? WHERE eid = ?;";
-                pstmt = conn.prepareStatement(nameInserts);
-                pstmt.setString(1, valueToChangeTo);
-                pstmt.setInt(2, eidToEdit);
-            }else if (type.equalsIgnoreCase("pay rate")){
-                nameInserts = "UPDATE Employee SET payrate = ? WHERE eid = ?;";
-                pstmt = conn.prepareStatement(nameInserts);
-                pstmt.setString(1, valueToChangeTo);
-                pstmt.setInt(2, eidToEdit);
-            }else{
-                System.out.println("invalid input");
-            }
-            pstmt.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        if(fieldToEdit.equalsIgnoreCase("first name")){
+            pstmt = conn.prepareStatement("UPDATE Employee SET firstName = ?;");
+        }else if(fieldToEdit.equalsIgnoreCase("last name")){
+            pstmt = conn.prepareStatement("UPDATE Employee SET lastName = ?;");
+        }else if(fieldToEdit.equalsIgnoreCase("job title")){
+            pstmt = conn.prepareStatement("UPDATE Employee SET jobTitle = ?;");
+        }else if (fieldToEdit.equalsIgnoreCase("pay rate")){
+            pstmt = conn.prepareStatement("UPDATE Employee SET payrate = ?;");
         }
+
+        pstmt.setString(1, newValue);
+        pstmt.setInt(2, idToEdit);
+        pstmt.executeUpdate();
     }
 
     /**

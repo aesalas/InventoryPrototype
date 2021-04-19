@@ -1,3 +1,5 @@
+--Class Project--
+
 Restaurant Inventory System Prototype.
 
 Features:
